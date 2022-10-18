@@ -32,7 +32,20 @@
         <protostuff.version>1.7.2</protostuff.version>
         <!--hessian-->
         <hessian.version>4.0.65</hessian.version>
+        <spring-boot.version>2.2.6.RELEASE</spring-boot.version>
     </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <!-- Import dependency management from Spring Boot -->
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
         <!-- lombok -->
         <dependency>
