@@ -9,7 +9,7 @@ public enum SerializationTypeEnum {
 
     KYRO((byte) 0x01, "kyro"),
     PROTOSTUFF((byte) 0x02, "protostuff"),
-    HESSIAN((byte) 0X03, "hessian");
+    HESSIAN((byte) 0x03, "hessian");
 
     private final byte code;
     private final String name;
@@ -21,6 +21,15 @@ public enum SerializationTypeEnum {
             }
         }
         return null;
+    }
+
+    public static byte getCode(String name) {
+        for (SerializationTypeEnum c : SerializationTypeEnum.values()) {
+            if (c.getName().equals(name)) {
+                return c.code;
+            }
+        }
+        return 0x00;
     }
 
 }

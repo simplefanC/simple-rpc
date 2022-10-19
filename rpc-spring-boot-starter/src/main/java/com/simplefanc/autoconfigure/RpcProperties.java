@@ -32,4 +32,8 @@ public class RpcProperties {
      * 权重，默认为1
      */
     private Integer weight = 1;
+
+    private String compress = "gzip";
+
+    private String codec = "hessian";
 }

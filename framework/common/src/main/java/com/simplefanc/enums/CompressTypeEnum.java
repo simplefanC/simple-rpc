@@ -21,4 +21,12 @@ public enum CompressTypeEnum {
         return null;
     }
 
+    public static byte getCode(String name) {
+        for (CompressTypeEnum c : CompressTypeEnum.values()) {
+            if (c.getName() == name) {
+                return c.code;
+            }
+        }
+        return 0x00;
+    }
 }

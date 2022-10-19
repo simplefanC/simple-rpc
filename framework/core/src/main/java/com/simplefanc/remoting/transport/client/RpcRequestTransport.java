@@ -1,4 +1,4 @@
-package com.simplefanc.remoting.transport;
+package com.simplefanc.remoting.transport.client;
 
 
 import com.simplefanc.extension.SPI;

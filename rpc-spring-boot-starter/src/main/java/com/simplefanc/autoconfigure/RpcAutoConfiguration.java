@@ -1,10 +1,13 @@
 package com.simplefanc.autoconfigure;
 
 import com.simplefanc.extension.ExtensionLoader;
-import com.simplefanc.factory.SingletonFactory;
 import com.simplefanc.loadbalance.LoadBalance;
-import com.simplefanc.remoting.transport.RpcRequestTransport;
+import com.simplefanc.registry.ServiceDiscovery;
+import com.simplefanc.registry.zk.ZkServiceDiscoveryImpl;
+import com.simplefanc.remoting.transport.client.NettyRpcClient;
+import com.simplefanc.remoting.transport.client.RpcRequestTransport;
 import com.simplefanc.remoting.transport.server.NettyRpcServer;
+import com.simplefanc.remoting.transport.server.handler.RpcRequestHandler;
 import com.simplefanc.serviceprovider.ServiceProvider;
 import com.simplefanc.serviceprovider.impl.ZkServiceProviderImpl;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -20,19 +23,14 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties(RpcProperties.class)
 public class RpcAutoConfiguration {
     @Bean
-    public NettyRpcServer rpcServer(RpcProperties rpcProperties) {
-        return new NettyRpcServer(rpcProperties.getServerPort());
-    }
-
-    @Bean
     public DefaultRpcProcessor rpcProcessor(NettyRpcServer rpcServer) {
         return new DefaultRpcProcessor(rpcServer);
     }
 
-    // 设置负载均衡
     @Bean
-    public LoadBalance loadBalance(){
-        return ExtensionLoader.getExtensionLoader(LoadBalance.class).getExtension("loadBalance");
+    public NettyRpcServer rpcServer(RpcProperties rpcProperties, ServiceProvider serviceProvider) {
+        RpcRequestHandler requestHandler = new RpcRequestHandler(serviceProvider);
+        return new NettyRpcServer(rpcProperties.getServerPort(), requestHandler);
     }
 
     // 设置服务发现
@@ -44,8 +42,16 @@ public class RpcAutoConfiguration {
 
     // 设置网络层实现
     @Bean
-    public RpcRequestTransport rpcRequestTransport(){
-        return ExtensionLoader.getExtensionLoader(RpcRequestTransport.class).getExtension("netty");
+    public RpcRequestTransport rpcRequestTransport(RpcProperties rpcProperties) {
+        // 设置负载均衡
+        LoadBalance loadBalance = ExtensionLoader.getExtensionLoader(LoadBalance.class).getExtension("loadBalance");
+        // 设置服务发现
+//        ServiceDiscovery serviceDiscovery = ExtensionLoader.getExtensionLoader(ServiceDiscovery.class).getExtension("zk");
+        ServiceDiscovery serviceDiscovery = new ZkServiceDiscoveryImpl(loadBalance);
+
+        // 设置编码和压缩
+        return new NettyRpcClient(serviceDiscovery, rpcProperties.getCompress(), rpcProperties.getCodec());
+//        return ExtensionLoader.getExtensionLoader(RpcRequestTransport.class).getExtension("netty");
     }
 
     @Bean
