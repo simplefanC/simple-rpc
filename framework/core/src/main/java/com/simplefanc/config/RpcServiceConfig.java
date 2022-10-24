@@ -4,10 +4,7 @@ import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-@Builder
-@ToString
+@Data
 public class RpcServiceConfig {
     /**
      * service version
