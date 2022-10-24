@@ -8,8 +8,8 @@ import com.simplefanc.remoting.transport.client.NettyRpcClient;
 import com.simplefanc.remoting.transport.client.RpcRequestTransport;
 import com.simplefanc.remoting.transport.server.NettyRpcServer;
 import com.simplefanc.remoting.transport.server.handler.RpcRequestHandler;
-import com.simplefanc.serviceprovider.ServiceProvider;
-import com.simplefanc.serviceprovider.impl.ZkServiceProviderImpl;
+import com.simplefanc.provider.ServiceProvider;
+import com.simplefanc.provider.impl.ZkServiceProviderImpl;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +33,7 @@ public class RpcAutoConfiguration {
         return new NettyRpcServer(rpcProperties.getServerPort(), requestHandler);
     }
 
-    // 设置服务发现
+    // 服务发布
     @Bean
     public ServiceProvider serviceProvider(){
         // 可根据 RpcProperties 配置

@@ -2,7 +2,7 @@ package com.simplefanc.remoting.transport.server.handler;
 
 import com.simplefanc.exception.RpcException;
 import com.simplefanc.remoting.dto.RpcRequest;
-import com.simplefanc.serviceprovider.ServiceProvider;
+import com.simplefanc.provider.ServiceProvider;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.InvocationTargetException;
@@ -29,11 +29,17 @@ public class RpcRequestHandler {
         return invokeTargetMethod(rpcRequest, service);
     }
 
+    /**
+     * 反射调用 目标方法
+     * @param rpcRequest
+     * @param service
+     * @return
+     */
     private Object invokeTargetMethod(RpcRequest rpcRequest, Object service) {
         Object result;
         try {
             Method method = service.getClass().getMethod(rpcRequest.getMethodName(), rpcRequest.getParamTypes());
-            // 调用 target service 的 目标方法
+            // 反射调用 target service 的 目标方法
             result = method.invoke(service, rpcRequest.getParameters());
             log.info("service:[{}] successful invoke method:[{}]", rpcRequest.getInterfaceName(), rpcRequest.getMethodName());
         } catch (NoSuchMethodException | IllegalArgumentException | InvocationTargetException | IllegalAccessException e) {

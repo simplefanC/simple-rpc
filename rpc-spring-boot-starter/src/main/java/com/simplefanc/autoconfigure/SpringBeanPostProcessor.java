@@ -5,7 +5,7 @@ import com.simplefanc.autoconfigure.annotation.RpcService;
 import com.simplefanc.config.RpcServiceConfig;
 import com.simplefanc.proxy.RpcClientProxy;
 import com.simplefanc.remoting.transport.client.RpcRequestTransport;
-import com.simplefanc.serviceprovider.ServiceProvider;
+import com.simplefanc.provider.ServiceProvider;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;

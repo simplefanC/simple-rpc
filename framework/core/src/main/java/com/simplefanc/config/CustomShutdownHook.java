@@ -1,6 +1,7 @@
 package com.simplefanc.config;
 
 import com.simplefanc.registry.zk.util.CuratorUtils;
+import com.simplefanc.remoting.transport.server.NettyRpcServer;
 import com.simplefanc.utils.threadpool.ThreadPoolFactoryUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,8 +24,7 @@ public class CustomShutdownHook {
         log.info("addShutdownHook for clearAll");
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
-                // TODO
-                InetSocketAddress inetSocketAddress = new InetSocketAddress(InetAddress.getLocalHost().getHostAddress(), 9999);
+                InetSocketAddress inetSocketAddress = new InetSocketAddress(InetAddress.getLocalHost().getHostAddress(), NettyRpcServer.PORT);
                 CuratorUtils.clearRegistry(CuratorUtils.getZkClient(), inetSocketAddress);
             } catch (UnknownHostException ignored) {
             }

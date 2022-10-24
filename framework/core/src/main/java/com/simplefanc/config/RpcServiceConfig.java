@@ -19,7 +19,7 @@ public class RpcServiceConfig {
     private String group = "";
 
     /**
-     * target service
+     * target service: bean
      */
     private Object service;
 

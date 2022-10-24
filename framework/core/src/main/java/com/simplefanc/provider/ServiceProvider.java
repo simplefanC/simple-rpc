@@ -1,8 +1,9 @@
-package com.simplefanc.serviceprovider;
+package com.simplefanc.provider;
 
 import com.simplefanc.config.RpcServiceConfig;
 
 /**
+ * 服务提供者
  * store and provide service object.
  */
 public interface ServiceProvider {

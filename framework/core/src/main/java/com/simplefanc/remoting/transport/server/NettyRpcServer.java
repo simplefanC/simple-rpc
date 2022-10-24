@@ -30,11 +30,13 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Getter
 public class NettyRpcServer {
-    public final int serverPort;
+    // TODO 能否也配置化
+    public static final int PORT = 9998;
+//    public final int serverPort;
     private final RpcRequestHandler requestHandler;
 
     public NettyRpcServer(int serverPort, RpcRequestHandler requestHandler) {
-        this.serverPort = serverPort;
+//        this.serverPort = serverPort;
         this.requestHandler = requestHandler;
     }
 
@@ -80,7 +82,7 @@ public class NettyRpcServer {
                     });
             String host = InetAddress.getLocalHost().getHostAddress();
             // 绑定端口，同步等待绑定成功
-            ChannelFuture f = b.bind(host, this.serverPort).sync();
+            ChannelFuture f = b.bind(host, PORT).sync();
             // 等待服务端监听端口关闭
             f.channel().closeFuture().sync();
         } catch (InterruptedException e) {
