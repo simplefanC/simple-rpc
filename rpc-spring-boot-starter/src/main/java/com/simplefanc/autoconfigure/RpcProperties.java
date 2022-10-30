@@ -35,5 +35,5 @@ public class RpcProperties {
 
     private String compress = "gzip";
 
-    private String codec = "hessian";
+    private String codec = "kyro";
 }

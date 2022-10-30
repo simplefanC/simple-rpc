@@ -6,7 +6,7 @@ import com.simplefanc.factory.SingletonFactory;
 import com.simplefanc.remoting.constants.RpcConstants;
 import com.simplefanc.remoting.dto.RpcMessage;
 import com.simplefanc.remoting.dto.RpcResponse;
-import com.simplefanc.remoting.transport.client.NettyRpcClient;
+import com.simplefanc.remoting.transport.client.ChannelProvider;
 import com.simplefanc.remoting.transport.client.UnprocessedRequests;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
@@ -30,11 +30,14 @@ import java.net.InetSocketAddress;
 @Slf4j
 public class NettyRpcClientHandler extends ChannelInboundHandlerAdapter {
     private final UnprocessedRequests unprocessedRequests;
-    private final NettyRpcClient nettyRpcClient;
+//    private final NettyRpcClient nettyRpcClient;
 
-    public NettyRpcClientHandler() {
+    private final ChannelProvider channelProvider;
+
+    public NettyRpcClientHandler(ChannelProvider channelProvider) {
         this.unprocessedRequests = SingletonFactory.getInstance(UnprocessedRequests.class);
-        this.nettyRpcClient = SingletonFactory.getInstance(NettyRpcClient.class);
+        this.channelProvider = channelProvider;
+//        this.nettyRpcClient = nettyRpcClient;
     }
 
     /**
@@ -77,7 +80,8 @@ public class NettyRpcClientHandler extends ChannelInboundHandlerAdapter {
             if (state == IdleState.WRITER_IDLE) {
                 // 发送心跳给服务端
                 log.info("write idle happen [{}]", ctx.channel().remoteAddress());
-                Channel channel = nettyRpcClient.getChannel((InetSocketAddress) ctx.channel().remoteAddress());
+                // TODO
+                Channel channel = channelProvider.get((InetSocketAddress) ctx.channel().remoteAddress());
                 RpcMessage rpcMessage = new RpcMessage();
                 rpcMessage.setCodec(SerializationTypeEnum.PROTOSTUFF.getCode());
                 rpcMessage.setCompress(CompressTypeEnum.GZIP.getCode());

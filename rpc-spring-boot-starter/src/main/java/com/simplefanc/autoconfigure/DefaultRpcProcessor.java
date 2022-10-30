@@ -1,9 +1,12 @@
 package com.simplefanc.autoconfigure;
 
+import com.simplefanc.autoconfigure.annotation.RpcService;
 import com.simplefanc.remoting.transport.server.NettyRpcServer;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -23,7 +26,11 @@ public class DefaultRpcProcessor implements ApplicationListener<ContextRefreshed
     public void onApplicationEvent(ContextRefreshedEvent event) {
         // Spring启动完毕过后会收到一个事件通知
         if (Objects.isNull(event.getApplicationContext().getParent())) {
-            rpcServer.start();
+            ApplicationContext context = event.getApplicationContext();
+            Map<String, Object> beans = context.getBeansWithAnnotation(RpcService.class);
+            if (beans.size() > 0) {
+                rpcServer.start();
+            }
         }
     }
 }

@@ -28,6 +28,11 @@ public class RpcAutoConfiguration {
     }
 
     @Bean
+    public SpringBeanPostProcessor beanPostProcessor(ServiceProvider serviceProvider, RpcRequestTransport rpcClient) {
+        return new SpringBeanPostProcessor(serviceProvider, rpcClient);
+    }
+
+    @Bean
     public NettyRpcServer rpcServer(RpcProperties rpcProperties, ServiceProvider serviceProvider) {
         RpcRequestHandler requestHandler = new RpcRequestHandler(serviceProvider);
         return new NettyRpcServer(rpcProperties.getServerPort(), requestHandler);
@@ -52,11 +57,6 @@ public class RpcAutoConfiguration {
         // 设置编码和压缩
         return new NettyRpcClient(serviceDiscovery, rpcProperties.getCompress(), rpcProperties.getCodec());
 //        return ExtensionLoader.getExtensionLoader(RpcRequestTransport.class).getExtension("netty");
-    }
-
-    @Bean
-    public SpringBeanPostProcessor beanPostProcessor(ServiceProvider serviceProvider, RpcRequestTransport rpcClient) {
-        return new SpringBeanPostProcessor(serviceProvider, rpcClient);
     }
 
 }

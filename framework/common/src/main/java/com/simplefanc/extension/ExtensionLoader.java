@@ -79,7 +79,7 @@ public final class ExtensionLoader<T> {
     // clazz和实例
     private T createExtension(String name) {
         // load all extension classes of type T from file and get specific one by name
-        Class<?> clazz = getExtensionClasses().get(name); // github.javaguide.serialize.kyro.KryoSerializer
+        Class<?> clazz = getExtensionClasses().get(name); // com.simplefanc.serialize.kyro.KryoSerializer
         if (clazz == null) {
             throw new RuntimeException("No such extension of name " + name);
         }
@@ -95,9 +95,9 @@ public final class ExtensionLoader<T> {
         return instance;
     }
 
-    // kyro：github.javaguide.serialize.kyro.KryoSerializer
-    // protostuff：github.javaguide.serialize.protostuff.ProtostuffSerializer
-    // hessian：github.javaguide.serialize.hessian.HessianSerializer
+    // kyro：com.simplefanc.serialize.kyro.KryoSerializer
+    // protostuff：com.simplefanc.serialize.protostuff.ProtostuffSerializer
+    // hessian：com.simplefanc.serialize.hessian.HessianSerializer
     private Map<String, Class<?>> getExtensionClasses() {
         // get the loaded extension class from the cache
         Map<String, Class<?>> classes = cachedClasses.get();
@@ -116,9 +116,9 @@ public final class ExtensionLoader<T> {
         return classes;
     }
 
-    // kyro：github.javaguide.serialize.kyro.KryoSerializer
-    // protostuff：github.javaguide.serialize.protostuff.ProtostuffSerializer
-    // hessian：github.javaguide.serialize.hessian.HessianSerializer
+    // kyro：com.simplefanc.serialize.kyro.KryoSerializer
+    // protostuff：com.simplefanc.serialize.protostuff.ProtostuffSerializer
+    // hessian：com.simplefanc.serialize.hessian.HessianSerializer
     private void loadDirectory(Map<String, Class<?>> extensionClasses) {
         String fileName = ExtensionLoader.SERVICE_DIRECTORY + type.getName();
         try {

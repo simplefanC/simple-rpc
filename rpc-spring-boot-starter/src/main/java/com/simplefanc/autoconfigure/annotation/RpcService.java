@@ -1,6 +1,8 @@
 package com.simplefanc.autoconfigure.annotation;
 
 
+import org.springframework.stereotype.Component;
+
 import java.lang.annotation.*;
 
 /**
@@ -10,6 +12,7 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
+@Component
 @Inherited
 public @interface RpcService {
 
