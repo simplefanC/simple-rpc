@@ -33,10 +33,14 @@ public class NettyRpcClientHandler extends ChannelInboundHandlerAdapter {
 //    private final NettyRpcClient nettyRpcClient;
 
     private final ChannelProvider channelProvider;
+    private final String serialization;
+    private final String compress;
 
-    public NettyRpcClientHandler(ChannelProvider channelProvider) {
+    public NettyRpcClientHandler(ChannelProvider channelProvider, String serialization, String compress) {
         this.unprocessedRequests = SingletonFactory.getInstance(UnprocessedRequests.class);
         this.channelProvider = channelProvider;
+        this.serialization = serialization;
+        this.compress = compress;
 //        this.nettyRpcClient = nettyRpcClient;
     }
 
@@ -83,11 +87,12 @@ public class NettyRpcClientHandler extends ChannelInboundHandlerAdapter {
                 // TODO
                 Channel channel = channelProvider.get((InetSocketAddress) ctx.channel().remoteAddress());
                 RpcMessage rpcMessage = new RpcMessage();
-                rpcMessage.setCodec(SerializationTypeEnum.PROTOSTUFF.getCode());
-                rpcMessage.setCompress(CompressTypeEnum.GZIP.getCode());
+                rpcMessage.setSerialization(SerializationTypeEnum.getCode(serialization));
+                rpcMessage.setCompress(CompressTypeEnum.getCode(compress));
                 rpcMessage.setMessageType(RpcConstants.HEARTBEAT_REQUEST_TYPE);
                 rpcMessage.setData(RpcConstants.PING);
                 channel.writeAndFlush(rpcMessage).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
+                log.info("client send message: [{}]", rpcMessage);
             }
         } else {
             super.userEventTriggered(ctx, evt);

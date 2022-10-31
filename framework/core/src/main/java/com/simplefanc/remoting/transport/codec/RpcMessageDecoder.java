@@ -79,11 +79,12 @@ public class RpcMessageDecoder extends LengthFieldBasedFrameDecoder {
         int fullLength = in.readInt();
         // build RpcMessage object
         byte messageType = in.readByte();
-        byte codecType = in.readByte();
+        byte serializationType = in.readByte();
         byte compressType = in.readByte();
         int requestId = in.readInt();
         RpcMessage rpcMessage = RpcMessage.builder()
-                .codec(codecType)
+                .serialization(serializationType)
+                .compress(compressType)
                 .requestId(requestId)
                 .messageType(messageType).build();
         if (messageType == RpcConstants.HEARTBEAT_REQUEST_TYPE) {
@@ -104,10 +105,10 @@ public class RpcMessageDecoder extends LengthFieldBasedFrameDecoder {
                     .getExtension(compressName);
             bs = compress.decompress(bs);
             // deserialize the object
-            String codecName = SerializationTypeEnum.getName(rpcMessage.getCodec());
-            log.info("codec name: [{}] ", codecName);
+            String serializationName = SerializationTypeEnum.getName(rpcMessage.getSerialization());
+            log.info("serialization name: [{}] ", serializationName);
             Serializer serializer = ExtensionLoader.getExtensionLoader(Serializer.class)
-                    .getExtension(codecName);
+                    .getExtension(serializationName);
             // 反序列化
             if (messageType == RpcConstants.REQUEST_TYPE) {
                 RpcRequest tmpValue = serializer.deserialize(bs, RpcRequest.class);

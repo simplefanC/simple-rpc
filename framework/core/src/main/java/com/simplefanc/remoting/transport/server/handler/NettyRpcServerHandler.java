@@ -23,9 +23,13 @@ import lombok.extern.slf4j.Slf4j;
 public class NettyRpcServerHandler extends ChannelInboundHandlerAdapter {
 
     private final RpcRequestHandler rpcRequestHandler;
+    private final String serialization;
+    private final String compress;
 
-    public NettyRpcServerHandler(RpcRequestHandler requestHandler) {
+    public NettyRpcServerHandler(RpcRequestHandler requestHandler, String serialization, String compress) {
         this.rpcRequestHandler = requestHandler;
+        this.compress = compress;
+        this.serialization = serialization;
     }
 
     /**
@@ -41,9 +45,8 @@ public class NettyRpcServerHandler extends ChannelInboundHandlerAdapter {
                 log.info("server receive msg: [{}] ", msg);
                 byte messageType = ((RpcMessage) msg).getMessageType();
                 RpcMessage rpcMessage = new RpcMessage();
-                // TODO
-                rpcMessage.setCodec(SerializationTypeEnum.KYRO.getCode());
-                rpcMessage.setCompress(CompressTypeEnum.GZIP.getCode());
+                rpcMessage.setSerialization(SerializationTypeEnum.getCode(this.serialization));
+                rpcMessage.setCompress(CompressTypeEnum.getCode(this.compress));
                 if (messageType == RpcConstants.HEARTBEAT_REQUEST_TYPE) {
                     rpcMessage.setMessageType(RpcConstants.HEARTBEAT_RESPONSE_TYPE);
                     rpcMessage.setData(RpcConstants.PONG);

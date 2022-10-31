@@ -57,8 +57,8 @@ public class HelloController {
 配置项：
 |    属性 |含义      |  可选项   |
 | --- | --- | --- |
-| rpc.registry.address  | 注册中心地址     | localhost:2181（默认）             |
-| rpc.registry.protocol | 注册中心地址协议 | zookeeper（默认），redis           |
+| rpc.registry-address | 注册中心地址     | localhost:2181（默认）             |
+| rpc.registry-protocol | 注册中心地址协议 | zookeeper（默认），redis           |
 | rpc.transporter | 网络传输方式 | netty（默认），socket |
 | rpc.serialization     | 消息序列化协议   | kryo（默认），protostuff，hessian      |
 | rpc.compress | 压缩方案 | gzip（默认） |
@@ -83,9 +83,8 @@ public class HelloServiceImpl implements HelloService {
  配置项：
 |    属性 |含义      |  可选项   |
 | --- | --- | --- |
-| pc.registry.address   | 注册中心地址     | localhost:2181（默认）                 |
-| rpc.registry.protocol | 注册中心地址协议 | zookeeper（默认），redis               |
+| pc.registry-address  | 注册中心地址     | localhost:2181（默认）                 |
+| rpc.registry-protocol | 注册中心地址协议 | zookeeper（默认），redis               |
 | rpc.transporter       | 网络传输方式     | netty（默认），socket                  |
 | rpc.serialization     | 消息序列化协议   | kryo（默认），protostuff，hessian      |
 | rpc.compress          | 压缩方案         | gzip（默认）                           |
-| rpc.loadbalance | 负载均衡算法 | random<br>round<br>weightRound<br>hash |

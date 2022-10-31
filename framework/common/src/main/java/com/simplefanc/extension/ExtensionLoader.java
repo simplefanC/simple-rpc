@@ -51,7 +51,6 @@ public final class ExtensionLoader<T> {
         return extensionLoader;
     }
 
-    // TODO name不应该硬编码 如zk netty
     public T getExtension(String name) {
         if (StringUtil.isBlank(name)) {
             throw new IllegalArgumentException("Extension name should not be null or empty.");

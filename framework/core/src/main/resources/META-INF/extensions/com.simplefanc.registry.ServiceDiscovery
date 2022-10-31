@@ -1,1 +1,1 @@
-zk=com.simplefanc.registry.zk.ZkServiceDiscoveryImpl
+zookeeper=com.simplefanc.registry.zk.ZkServiceDiscoveryImpl

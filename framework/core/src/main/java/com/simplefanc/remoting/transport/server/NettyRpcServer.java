@@ -31,13 +31,17 @@ import java.util.concurrent.TimeUnit;
 @Getter
 public class NettyRpcServer {
     // TODO 能否也配置化
-    public static final int PORT = 9998;
+    public static final int PORT = 9999;
 //    public final int serverPort;
     private final RpcRequestHandler requestHandler;
+    private final String serialization;
+    private final String compress;
 
-    public NettyRpcServer(int serverPort, RpcRequestHandler requestHandler) {
+    public NettyRpcServer(int serverPort, RpcRequestHandler requestHandler, String serialization, String compress) {
 //        this.serverPort = serverPort;
         this.requestHandler = requestHandler;
+        this.serialization = serialization;
+        this.compress = compress;
     }
 
     @SneakyThrows
@@ -77,7 +81,7 @@ public class NettyRpcServer {
                             p.addLast(new IdleStateHandler(30, 0, 0, TimeUnit.SECONDS));
                             p.addLast(new RpcMessageEncoder());
                             p.addLast(new RpcMessageDecoder());
-                            p.addLast(serviceHandlerGroup, new NettyRpcServerHandler(requestHandler));
+                            p.addLast(serviceHandlerGroup, new NettyRpcServerHandler(requestHandler, serialization, compress));
                         }
                     });
             String host = InetAddress.getLocalHost().getHostAddress();

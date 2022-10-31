@@ -21,14 +21,12 @@ import java.util.List;
  **/
 @Slf4j
 public class ZkServiceDiscoveryImpl implements ServiceDiscovery {
-    private final LoadBalance loadBalance;
 
-    public ZkServiceDiscoveryImpl(LoadBalance loadBalance) {
-        this.loadBalance = loadBalance;
+    public ZkServiceDiscoveryImpl() {
     }
 
     @Override
-    public InetSocketAddress lookupService(RpcRequest rpcRequest) {
+    public InetSocketAddress lookupService(RpcRequest rpcRequest, LoadBalance loadBalance) {
         String rpcServiceName = rpcRequest.getRpcServiceName();
         CuratorFramework zkClient = CuratorUtils.getZkClient();
         List<String> serviceUrlList = CuratorUtils.getChildrenNodes(zkClient, rpcServiceName);

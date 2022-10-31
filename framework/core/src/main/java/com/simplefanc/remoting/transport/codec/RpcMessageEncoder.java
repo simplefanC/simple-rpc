@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *   |                                        ... ...                                                        |
  *   +-------------------------------------------------------------------------------------------------------+
  * 4B  magic code（魔法数）   1B version（版本）   4B full length（消息长度）    1B messageType（消息类型）
- * 1B compress（压缩类型） 1B codec（序列化类型）    4B  requestId（请求的Id）
+ * 1B compress（压缩类型） 1B serialization（序列化类型）    4B  requestId（请求的Id）
  * body（object类型数据）
  * </pre>
  *
@@ -51,8 +51,8 @@ public class RpcMessageEncoder extends MessageToByteEncoder<RpcMessage> {
             out.writerIndex(out.writerIndex() + 4);
             byte messageType = rpcMessage.getMessageType();
             out.writeByte(messageType);
-            out.writeByte(rpcMessage.getCodec());
-            out.writeByte(CompressTypeEnum.GZIP.getCode());
+            out.writeByte(rpcMessage.getSerialization());
+            out.writeByte(rpcMessage.getCompress());
             out.writeInt(ATOMIC_INTEGER.getAndIncrement());
             // build full length
             byte[] bodyBytes = null;
@@ -62,10 +62,10 @@ public class RpcMessageEncoder extends MessageToByteEncoder<RpcMessage> {
             if (messageType != RpcConstants.HEARTBEAT_REQUEST_TYPE
                     && messageType != RpcConstants.HEARTBEAT_RESPONSE_TYPE) {
                 // serialize the object
-                String codecName = SerializationTypeEnum.getName(rpcMessage.getCodec());
-                log.info("codec name: [{}] ", codecName);
+                String serializationName = SerializationTypeEnum.getName(rpcMessage.getSerialization());
+                log.info("serialization name: [{}] ", serializationName);
                 Serializer serializer = ExtensionLoader.getExtensionLoader(Serializer.class)
-                        .getExtension(codecName);
+                        .getExtension(serializationName);
                 // 序列化
                 bodyBytes = serializer.serialize(rpcMessage.getData());
                 // compress the bytes

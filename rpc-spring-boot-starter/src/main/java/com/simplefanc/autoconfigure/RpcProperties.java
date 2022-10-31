@@ -14,20 +14,20 @@ public class RpcProperties {
     /**
      * 服务注册中心地址
      */
-    private String registerAddress = "127.0.0.1:2181";
+    private String registryAddress = "127.0.0.1:2181";
+
+    private String registryProtocol = "zookeeper";
 
     /**
      * 服务暴露端口
      */
     private int serverPort = 9999;
-    /**
-     * 服务协议
-     */
-    private String protocol = "java";
+
     /**
      * 负载均衡算法
      */
     private String loadBalance = "random";
+
     /**
      * 权重，默认为1
      */
@@ -35,5 +35,5 @@ public class RpcProperties {
 
     private String compress = "gzip";
 
-    private String codec = "kyro";
+    private String serialization = "kyro";
 }

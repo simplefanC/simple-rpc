@@ -1,6 +1,7 @@
 package com.simplefanc.registry;
 
 import com.simplefanc.extension.SPI;
+import com.simplefanc.loadbalance.LoadBalance;
 import com.simplefanc.remoting.dto.RpcRequest;
 
 import java.net.InetSocketAddress;
@@ -16,5 +17,5 @@ public interface ServiceDiscovery {
      * @param rpcRequest rpc service pojo
      * @return service address
      */
-    InetSocketAddress lookupService(RpcRequest rpcRequest);
+    InetSocketAddress lookupService(RpcRequest rpcRequest, LoadBalance loadBalance);
 }

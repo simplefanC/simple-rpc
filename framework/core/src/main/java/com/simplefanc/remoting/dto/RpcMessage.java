@@ -18,7 +18,7 @@ public class RpcMessage {
     /**
      * serialization type
      */
-    private byte codec;
+    private byte serialization;
     /**
      * compress type
      */

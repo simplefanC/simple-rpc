@@ -23,7 +23,7 @@ public enum CompressTypeEnum {
 
     public static byte getCode(String name) {
         for (CompressTypeEnum c : CompressTypeEnum.values()) {
-            if (c.getName() == name) {
+            if (c.getName().equals(name)) {
                 return c.code;
             }
         }

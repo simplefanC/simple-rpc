@@ -3,6 +3,7 @@ package com.simplefanc.remoting.transport.client;
 import com.simplefanc.enums.CompressTypeEnum;
 import com.simplefanc.enums.SerializationTypeEnum;
 import com.simplefanc.factory.SingletonFactory;
+import com.simplefanc.loadbalance.LoadBalance;
 import com.simplefanc.registry.ServiceDiscovery;
 import com.simplefanc.remoting.constants.RpcConstants;
 import com.simplefanc.remoting.dto.RpcMessage;
@@ -33,18 +34,20 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class NettyRpcClient implements RpcRequestTransport {
     private final ServiceDiscovery serviceDiscovery;
+    private final LoadBalance loadBalance;
     private final String compress;
-    private final String codec;
+    private final String serialization;
 
     private final UnprocessedRequests unprocessedRequests;
     private final ChannelProvider channelProvider;
     private final Bootstrap bootstrap;
     private final EventLoopGroup eventLoopGroup;
 
-    public NettyRpcClient(ServiceDiscovery serviceDiscovery, String compress, String codec) {
+    public NettyRpcClient(ServiceDiscovery serviceDiscovery, LoadBalance loadBalance, String serialization, String compress) {
         this.serviceDiscovery = serviceDiscovery;
+        this.loadBalance = loadBalance;
         this.compress = compress;
-        this.codec = codec;
+        this.serialization = serialization;
 
         this.unprocessedRequests = SingletonFactory.getInstance(UnprocessedRequests.class);
         this.channelProvider = SingletonFactory.getInstance(ChannelProvider.class);
@@ -72,7 +75,7 @@ public class NettyRpcClient implements RpcRequestTransport {
                         p.addLast(new IdleStateHandler(0, 5, 0, TimeUnit.SECONDS));
                         p.addLast(new RpcMessageEncoder());
                         p.addLast(new RpcMessageDecoder());
-                        p.addLast(new NettyRpcClientHandler(channelProvider));
+                        p.addLast(new NettyRpcClientHandler(channelProvider, serialization, compress));
                     }
                 });
     }
@@ -88,7 +91,7 @@ public class NettyRpcClient implements RpcRequestTransport {
         // build return value
         CompletableFuture<RpcResponse<Object>> resultFuture = new CompletableFuture<>();
         // 服务发现
-        InetSocketAddress inetSocketAddress = serviceDiscovery.lookupService(rpcRequest);
+        InetSocketAddress inetSocketAddress = serviceDiscovery.lookupService(rpcRequest, loadBalance);
         // 获取 Channel（尽量复用）
         Channel channel = getChannel(inetSocketAddress);
         if (channel.isActive()) {
@@ -96,7 +99,7 @@ public class NettyRpcClient implements RpcRequestTransport {
             unprocessedRequests.put(rpcRequest.getRequestId(), resultFuture);
             RpcMessage rpcMessage = RpcMessage.builder().data(rpcRequest)
                     // 配置编码和压缩方案
-                    .codec(SerializationTypeEnum.getCode(this.codec))
+                    .serialization(SerializationTypeEnum.getCode(this.serialization))
                     .compress(CompressTypeEnum.getCode(this.compress))
                     .messageType(RpcConstants.REQUEST_TYPE).build();
             channel.writeAndFlush(rpcMessage).addListener((ChannelFutureListener) future -> {

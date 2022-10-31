@@ -1,1 +1,2 @@
-loadBalance=com.simplefanc.loadbalance.loadbalancer.ConsistentHashLoadBalance
+hash=com.simplefanc.loadbalance.loadbalancer.ConsistentHashLoadBalance
+random=com.simplefanc.loadbalance.loadbalancer.RandomLoadBalance

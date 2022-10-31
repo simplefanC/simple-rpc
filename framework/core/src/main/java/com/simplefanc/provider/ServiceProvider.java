@@ -1,11 +1,14 @@
 package com.simplefanc.provider;
 
 import com.simplefanc.config.RpcServiceConfig;
+import com.simplefanc.extension.SPI;
+import com.simplefanc.registry.ServiceRegistry;
 
 /**
  * 服务提供者
  * store and provide service object.
  */
+@SPI
 public interface ServiceProvider {
 
     /**
@@ -22,6 +25,6 @@ public interface ServiceProvider {
     /**
      * @param rpcServiceConfig rpc service related attributes
      */
-    void publishService(RpcServiceConfig rpcServiceConfig);
+    void publishService(ServiceRegistry serviceRegistry, RpcServiceConfig rpcServiceConfig);
 
 }

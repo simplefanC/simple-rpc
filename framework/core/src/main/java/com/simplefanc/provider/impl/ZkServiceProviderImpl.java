@@ -3,7 +3,6 @@ package com.simplefanc.provider.impl;
 import com.simplefanc.config.RpcServiceConfig;
 import com.simplefanc.enums.RpcErrorMessageEnum;
 import com.simplefanc.exception.RpcException;
-import com.simplefanc.extension.ExtensionLoader;
 import com.simplefanc.provider.ServiceProvider;
 import com.simplefanc.registry.ServiceRegistry;
 import com.simplefanc.remoting.transport.server.NettyRpcServer;
@@ -28,13 +27,10 @@ public class ZkServiceProviderImpl implements ServiceProvider {
      */
     private final Map<String, Object> serviceMap;
     private final Set<String> registeredService;
-    private final ServiceRegistry serviceRegistry;
 
     public ZkServiceProviderImpl() {
         serviceMap = new ConcurrentHashMap<>();
         registeredService = ConcurrentHashMap.newKeySet();
-        // TODO
-        serviceRegistry = ExtensionLoader.getExtensionLoader(ServiceRegistry.class).getExtension("zk");
     }
 
     @Override
@@ -58,7 +54,7 @@ public class ZkServiceProviderImpl implements ServiceProvider {
     }
 
     @Override
-    public void publishService(RpcServiceConfig rpcServiceConfig) {
+    public void publishService(ServiceRegistry serviceRegistry, RpcServiceConfig rpcServiceConfig) {
         try {
             String host = InetAddress.getLocalHost().getHostAddress();
             this.addService(rpcServiceConfig);

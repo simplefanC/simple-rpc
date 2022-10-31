@@ -4,6 +4,7 @@ import com.simplefanc.autoconfigure.annotation.RpcReference;
 import com.simplefanc.autoconfigure.annotation.RpcService;
 import com.simplefanc.config.RpcServiceConfig;
 import com.simplefanc.proxy.RpcClientProxy;
+import com.simplefanc.registry.ServiceRegistry;
 import com.simplefanc.remoting.transport.client.RpcRequestTransport;
 import com.simplefanc.provider.ServiceProvider;
 import lombok.SneakyThrows;
@@ -20,11 +21,13 @@ import java.lang.reflect.Field;
 @Slf4j
 public class SpringBeanPostProcessor implements BeanPostProcessor {
     private final ServiceProvider serviceProvider;
+    private final ServiceRegistry serviceRegistry;
     private final RpcRequestTransport rpcClient;
 
-    public SpringBeanPostProcessor(ServiceProvider serviceProvider, RpcRequestTransport rpcClient) {
+    public SpringBeanPostProcessor(ServiceProvider serviceProvider, ServiceRegistry serviceRegistry, RpcRequestTransport rpcClient) {
         this.serviceProvider = serviceProvider;
         this.rpcClient = rpcClient;
+        this.serviceRegistry = serviceRegistry;
     }
 
     /**
@@ -50,7 +53,7 @@ public class SpringBeanPostProcessor implements BeanPostProcessor {
                     .group(rpcService.group())
                     .version(rpcService.version())
                     .service(bean).build();
-            serviceProvider.publishService(rpcServiceConfig);
+            serviceProvider.publishService(serviceRegistry, rpcServiceConfig);
         }
         return bean;
     }
