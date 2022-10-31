@@ -15,7 +15,7 @@ simple-rpc
 ├────── common -- 基础工具类
 ├────── core -- 框架核心代码
 ├── rpc-spring-boot-starter -- 自定义starter整合Spring
-├──  example -- 使用示例代码
+├── example -- 使用示例代码
 ├────── api -- 服务接口定义
 ├────── consumer -- 服务消费者
 └────── provider -- 服务提供者
