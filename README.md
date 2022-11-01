@@ -42,7 +42,7 @@ mvn clean install -DskipTests=true
 使用`@RpcReference`注解注入服务。
  ```java
 @RestController
-@RequestMapping("hello")
+@RequestMapping("/hello")
 public class HelloController {
 
     @RpcReference(version = "version1", group = "test1")

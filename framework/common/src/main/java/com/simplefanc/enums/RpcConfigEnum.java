@@ -7,8 +7,11 @@ import lombok.Getter;
 @Getter
 public enum RpcConfigEnum {
 
-    RPC_CONFIG_PATH("rpc.properties"),
-    ZK_ADDRESS("rpc.zookeeper.address");
+    RPC_CONFIG_PATH("application.yml"),
+
+    RPC_CONFIG_KEY("rpc"),
+
+    RPC_CONFIG_REGISTRY_ADDRESS("registry-address");
 
     private final String propertyValue;
 

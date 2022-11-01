@@ -15,7 +15,6 @@ import org.apache.zookeeper.CreateMode;
 import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -92,13 +91,16 @@ public final class CuratorUtils {
                 log.error("clear registry for path [{}] fail", p);
             }
         });
-        log.info("All registered services on the server are cleared:[{}]", REGISTERED_PATH_SET.toString());
+        log.info("All registered services on the server are cleared:[{}]", REGISTERED_PATH_SET);
     }
+
+
 
     public static CuratorFramework getZkClient() {
         // check if user has set zk address
-        Properties properties = PropertiesFileUtil.readPropertiesFile(RpcConfigEnum.RPC_CONFIG_PATH.getPropertyValue());
-        String zookeeperAddress = properties != null && properties.getProperty(RpcConfigEnum.ZK_ADDRESS.getPropertyValue()) != null ? properties.getProperty(RpcConfigEnum.ZK_ADDRESS.getPropertyValue()) : DEFAULT_ZOOKEEPER_ADDRESS;
+        Map<String, Object> config = PropertiesFileUtil.loadYml(RpcConfigEnum.RPC_CONFIG_PATH.getPropertyValue());
+        Map<String, Object> rpc = (Map<String, Object>) config.get(RpcConfigEnum.RPC_CONFIG_KEY.getPropertyValue());
+        String registryAddress = (String) rpc.get(RpcConfigEnum.RPC_CONFIG_REGISTRY_ADDRESS.getPropertyValue());
         // if zkClient has been started, return directly
         if (zkClient != null && zkClient.getState() == CuratorFrameworkState.STARTED) {
             return zkClient;
@@ -107,7 +109,7 @@ public final class CuratorUtils {
         RetryPolicy retryPolicy = new ExponentialBackoffRetry(BASE_SLEEP_TIME, MAX_RETRIES);
         zkClient = CuratorFrameworkFactory.builder()
                 // the server to connect to (can be a server list)
-                .connectString(zookeeperAddress)
+                .connectString(registryAddress)
                 .retryPolicy(retryPolicy)
                 .build();
         zkClient.start();
