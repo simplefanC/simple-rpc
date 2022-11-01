@@ -27,8 +27,8 @@ public class RpcAutoConfiguration {
     }
 
     @Bean
-    public SpringBeanPostProcessor beanPostProcessor(ServiceProvider serviceProvider, ServiceRegistry serviceRegistry, RpcRequestTransport rpcClient) {
-        return new SpringBeanPostProcessor(serviceProvider, serviceRegistry, rpcClient);
+    public SpringBeanPostProcessor beanPostProcessor(ServiceProvider serviceProvider, ServiceRegistry serviceRegistry, RpcProperties rpcProperties, RpcRequestTransport rpcClient) {
+        return new SpringBeanPostProcessor(serviceProvider, serviceRegistry, rpcProperties.getServerPort(), rpcClient);
     }
 
     @Bean

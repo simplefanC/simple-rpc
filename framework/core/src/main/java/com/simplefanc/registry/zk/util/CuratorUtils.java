@@ -56,6 +56,21 @@ public final class CuratorUtils {
         }
     }
 
+    public static void createEphemeralNode(CuratorFramework zkClient, String path) {
+        try {
+            if (REGISTERED_PATH_SET.contains(path) || zkClient.checkExists().forPath(path) != null) {
+                log.info("The node already exists. The node is:[{}]", path);
+            } else {
+                //eg: /my-rpc/com.simplefanc.HelloService/127.0.0.1:9999
+                zkClient.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(path);
+                log.info("The node was created successfully. The node is:[{}]", path);
+            }
+            REGISTERED_PATH_SET.add(path);
+        } catch (Exception e) {
+            log.error("create ephemeral node for path [{}] fail", path);
+        }
+    }
+
     /**
      * Gets the children under a node
      *

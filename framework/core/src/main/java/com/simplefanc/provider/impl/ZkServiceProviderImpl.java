@@ -5,7 +5,6 @@ import com.simplefanc.enums.RpcErrorMessageEnum;
 import com.simplefanc.exception.RpcException;
 import com.simplefanc.provider.ServiceProvider;
 import com.simplefanc.registry.ServiceRegistry;
-import com.simplefanc.remoting.transport.server.NettyRpcServer;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetAddress;
@@ -54,12 +53,12 @@ public class ZkServiceProviderImpl implements ServiceProvider {
     }
 
     @Override
-    public void publishService(ServiceRegistry serviceRegistry, RpcServiceConfig rpcServiceConfig) {
+    public void publishService(ServiceRegistry serviceRegistry, RpcServiceConfig rpcServiceConfig, int serverPort) {
         try {
             String host = InetAddress.getLocalHost().getHostAddress();
             this.addService(rpcServiceConfig);
             // 注册：服务名 服务地址
-            serviceRegistry.registerService(rpcServiceConfig.getRpcServiceName(), new InetSocketAddress(host, NettyRpcServer.PORT));
+            serviceRegistry.registerService(rpcServiceConfig.getRpcServiceName(), new InetSocketAddress(host, serverPort));
         } catch (UnknownHostException e) {
             log.error("occur exception when getHostAddress", e);
         }

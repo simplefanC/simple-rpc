@@ -23,11 +23,13 @@ public class SpringBeanPostProcessor implements BeanPostProcessor {
     private final ServiceProvider serviceProvider;
     private final ServiceRegistry serviceRegistry;
     private final RpcRequestTransport rpcClient;
+    private final int serverPort;
 
-    public SpringBeanPostProcessor(ServiceProvider serviceProvider, ServiceRegistry serviceRegistry, RpcRequestTransport rpcClient) {
+    public SpringBeanPostProcessor(ServiceProvider serviceProvider, ServiceRegistry serviceRegistry, int serverPort, RpcRequestTransport rpcClient) {
         this.serviceProvider = serviceProvider;
         this.rpcClient = rpcClient;
         this.serviceRegistry = serviceRegistry;
+        this.serverPort = serverPort;
     }
 
     /**
@@ -53,7 +55,7 @@ public class SpringBeanPostProcessor implements BeanPostProcessor {
                     .group(rpcService.group())
                     .version(rpcService.version())
                     .service(bean).build();
-            serviceProvider.publishService(serviceRegistry, rpcServiceConfig);
+            serviceProvider.publishService(serviceRegistry, rpcServiceConfig, serverPort);
         }
         return bean;
     }

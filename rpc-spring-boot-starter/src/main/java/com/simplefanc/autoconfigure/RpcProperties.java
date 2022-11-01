@@ -11,17 +11,20 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = RpcProperties.RPC_PREFIX)
 public class RpcProperties {
     public static final String RPC_PREFIX = "rpc";
+
+    private String transporter = "netty";
+
+    /**
+     * 服务暴露端口
+     */
+    private int serverPort = 9999;
+
     /**
      * 服务注册中心地址
      */
     private String registryAddress = "127.0.0.1:2181";
 
     private String registryProtocol = "zookeeper";
-
-    /**
-     * 服务暴露端口
-     */
-    private int serverPort = 9999;
 
     /**
      * 负载均衡算法

@@ -1,13 +1,7 @@
 package com.simplefanc.config;
 
-import com.simplefanc.registry.zk.util.CuratorUtils;
-import com.simplefanc.remoting.transport.server.NettyRpcServer;
 import com.simplefanc.utils.threadpool.ThreadPoolFactoryUtil;
 import lombok.extern.slf4j.Slf4j;
-
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.UnknownHostException;
 
 /**
  * When the server is closed, do something such as unregister all services
@@ -23,11 +17,12 @@ public class CustomShutdownHook {
     public void clearAll() {
         log.info("addShutdownHook for clearAll");
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            try {
-                InetSocketAddress inetSocketAddress = new InetSocketAddress(InetAddress.getLocalHost().getHostAddress(), NettyRpcServer.PORT);
-                CuratorUtils.clearRegistry(CuratorUtils.getZkClient(), inetSocketAddress);
-            } catch (UnknownHostException ignored) {
-            }
+//            // 改为临时节点 省去 clearRegistry 操作
+//            try {
+//                InetSocketAddress inetSocketAddress = new InetSocketAddress(InetAddress.getLocalHost().getHostAddress(), 9999);
+//                CuratorUtils.clearRegistry(CuratorUtils.getZkClient(), inetSocketAddress);
+//            } catch (UnknownHostException ignored) {
+//            }
             ThreadPoolFactoryUtil.shutDownAllThreadPool();
         }));
     }

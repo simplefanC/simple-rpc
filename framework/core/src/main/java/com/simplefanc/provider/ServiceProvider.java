@@ -25,6 +25,6 @@ public interface ServiceProvider {
     /**
      * @param rpcServiceConfig rpc service related attributes
      */
-    void publishService(ServiceRegistry serviceRegistry, RpcServiceConfig rpcServiceConfig);
+    void publishService(ServiceRegistry serviceRegistry, RpcServiceConfig rpcServiceConfig, int serverPort);
 
 }

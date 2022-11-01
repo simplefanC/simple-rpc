@@ -18,6 +18,6 @@ public class ZkServiceRegistryImpl implements ServiceRegistry {
         // inetSocketAddress.toString()：/127.0.0.1:9999
         String servicePath = CuratorUtils.ZK_REGISTER_ROOT_PATH + "/" + rpcServiceName + inetSocketAddress.toString();
         CuratorFramework zkClient = CuratorUtils.getZkClient();
-        CuratorUtils.createPersistentNode(zkClient, servicePath);
+        CuratorUtils.createEphemeralNode(zkClient, servicePath);
     }
 }
