@@ -49,10 +49,10 @@ public class HelloController {
     private HelloService helloService;
 
     @GetMapping("/test")
-    public String test() throws InterruptedException {
+    public String test() {
         return this.helloService.hello(new Hello("111", "222"));
     }
-}s
+}
  ```
 配置项：
 |    属性 |含义      |  可选项   |
