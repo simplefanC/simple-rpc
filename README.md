@@ -1,13 +1,9 @@
 # simple-rpc
 
 [![license](https://img.shields.io/badge/license-MIT-informational)](https://github.com/simplefanC/simple-rpc/blob/main/LICENSE)
-
 [![java](https://img.shields.io/badge/Java-17-informational)](https://openjdk.org) 
-
 [![zookeeper](https://img.shields.io/badge/ZooKeeper-3.8.0-success)](https://zookeeper.apache.org)
-
 [![netty](https://img.shields.io/badge/Netty-4.1-success)](https://netty.io)
-
 [![kryo](https://img.shields.io/badge/Kryo-5.3.0-success)](https://github.com/EsotericSoftware/kryo)
 
 一款基于 Netty+Kyro+Zookeeper 实现的 RPC 框架。自定义starter完成与Spring的整合，简化了框架的使用。通过 SPI 机制提供了非常灵活的可扩展性。
