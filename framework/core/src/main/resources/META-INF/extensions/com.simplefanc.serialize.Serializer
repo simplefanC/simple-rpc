@@ -1,1 +1,3 @@
 kyro=com.simplefanc.serialize.kyro.KryoSerializer
+hessian=com.simplefanc.serialize.hessian.HessianSerializer
+protostuff=com.simplefanc.serialize.protostuff.ProtostuffSerializer
