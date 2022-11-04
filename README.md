@@ -1,13 +1,31 @@
 # simple-rpc
 
-一款基于 Netty+Kyro+Zookeeper 实现的 RPC 框架
+[![license](https://img.shields.io/badge/license-MIT-informational)](https://github.com/simplefanC/simple-rpc/blob/main/LICENSE)
+
+[![java](https://img.shields.io/badge/Java-17-informational)](https://openjdk.org) 
+
+[![zookeeper](https://img.shields.io/badge/ZooKeeper-3.8.0-success)](https://zookeeper.apache.org)
+
+[![netty](https://img.shields.io/badge/Netty-4.1-success)](https://netty.io)
+
+[![kryo](https://img.shields.io/badge/Kryo-5.3.0-success)](https://github.com/EsotericSoftware/kryo)
+
+一款基于 Netty+Kyro+Zookeeper 实现的 RPC 框架。自定义starter完成与Spring的整合，简化了框架的使用。通过 SPI 机制提供了非常灵活的可扩展性。
+
+## 架构
+
+![](./docs/image/simple-rpc.png)
+
+## 特性
+
 - 注册中心：使用 Zookeeper 实现服务注册与发现
 - 网络传输：使用 Netty 实现网络传输
 - 序列化：支持 Kyro、Hessian、Protostuff 等
 - 负载均衡：支持随机、轮询、加权轮询和一致性哈希等
-- SPI 机制：可插拔式拓展组件
+- 配置灵活：序列化方式、注册中心的实现方式、负载均衡算法等均可在配置文件灵活配置
+- 可拓展性：基于SPI 机制实现可插拔式拓展组件
 
-# 项目结构
+## 项目结构
 
 ```
 simple-rpc
@@ -21,7 +39,7 @@ simple-rpc
 └────── provider -- 服务提供者
 ```
 
-# 使用方法
+## 使用方法
 1. 下载代码到本地
 ```bash
 git clone https://github.com/simplefanC/simple-rpc.git
@@ -38,7 +56,7 @@ mvn clean install -DskipTests=true
    <version>1.0-SNAPSHOT</version>
  </dependency>
  ```
- ## 客户端
+ ### 客户端
 使用`@RpcReference`注解注入服务。
  ```java
 @RestController
@@ -65,7 +83,7 @@ public class HelloController {
 | rpc.loadbalance       | 负载均衡算法     | random<br>round<br>weightRound<br>hash |
 
 
- ## 服务端
+ ### 服务端
 使用`@RpcService`注解发布服务。
  ```java
 @Slf4j
@@ -90,3 +108,7 @@ public class HelloServiceImpl implements HelloService {
 | rpc.serialization     | 消息序列化协议   | kryo（默认），protostuff，hessian      |
 | rpc.compress          | 压缩方案         | gzip（默认）                           |
 | rpc.weight | 权重 | 1（默认） |
+
+## TODO
+
+- [ ] 服务监控中心
