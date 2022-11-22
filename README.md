@@ -97,8 +97,8 @@ public class HelloServiceImpl implements HelloService {
  配置项：
 |    属性 |含义      |  可选项   |
 | --- | --- | --- |
-| server-port |服务暴露端口 | 9999（默认） |
-| pc.registry-address  | 注册中心地址     | localhost:2181（默认）                 |
+| rpc.server-port |服务暴露端口 | 9999（默认） |
+| rpc.registry-address  | 注册中心地址     | localhost:2181（默认）                 |
 | rpc.registry-protocol | 注册中心地址协议 | zookeeper（默认），redis               |
 | rpc.transporter       | 网络传输方式     | netty（默认），socket                  |
 | rpc.serialization     | 消息序列化协议   | kryo（默认），protostuff，hessian      |
