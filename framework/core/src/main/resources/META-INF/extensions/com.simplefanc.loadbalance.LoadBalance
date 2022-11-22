@@ -1,2 +1,3 @@
 hash=com.simplefanc.loadbalance.loadbalancer.ConsistentHashLoadBalance
 random=com.simplefanc.loadbalance.loadbalancer.RandomLoadBalance
+round=com.simplefanc.loadbalance.loadbalancer.RoundRobinLoadBalance
