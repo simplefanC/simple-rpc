@@ -6,7 +6,7 @@
 [![netty](https://img.shields.io/badge/Netty-4.1-success)](https://netty.io)
 [![kryo](https://img.shields.io/badge/Kryo-5.3.0-success)](https://github.com/EsotericSoftware/kryo)
 
-一款基于 Netty+Kyro+Zookeeper 实现的 RPC 框架。自定义starter完成与Spring的整合，简化了框架的使用。通过 SPI 机制提供了非常灵活的可扩展性。
+一款基于 Netty+Kryo+Zookeeper 实现的 RPC 框架。自定义starter完成与Spring的整合，简化了框架的使用。通过 SPI 机制提供了非常灵活的可扩展性。
 
 ## 架构
 
@@ -16,7 +16,7 @@
 
 - 注册中心：使用 Zookeeper 实现服务注册与发现
 - 网络传输：使用 Netty 实现网络传输
-- 序列化：支持 Kyro、Hessian、Protostuff 等
+- 序列化：支持 Kryo、Hessian、Protostuff 等
 - 负载均衡：支持随机、轮询、加权轮询和一致性哈希等
 - 配置灵活：序列化方式、注册中心的实现方式、负载均衡算法等均可在配置文件灵活配置
 - 可拓展性：基于SPI 机制实现可插拔式拓展组件
